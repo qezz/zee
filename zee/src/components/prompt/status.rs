@@ -67,7 +67,7 @@ impl Component for Status {
         };
         Text::with(
             TextProperties::new()
-                .content(action_name.to_owned())
+                .content(action_name.clone())
                 .style(style),
         )
     }

@@ -404,7 +404,7 @@ where
         listing.reset(
             files_iter(path_str.clone())?.take(MAX_FILES_IN_PICKER),
             &path_str,
-            &prefix,
+            prefix,
         );
     } else {
         listing.set_filter(&path_str)

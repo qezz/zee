@@ -49,7 +49,7 @@ impl Component for LineInfo {
         for line_index in 0..frame.size.height {
             canvas.draw_str(
                 0,
-                line_index as usize,
+                line_index,
                 style,
                 if line_offset + line_index < num_lines {
                     " "

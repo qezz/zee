@@ -216,7 +216,7 @@ impl Component for BufferPicker {
                                 .path
                                 .as_ref()
                                 .map(|entry| format!("    {}", entry.display()))
-                                .unwrap_or_else(String::new),
+                                .unwrap_or_default(),
                         )
                         .style(Style::normal(background, theme.file_size)),
                 ),

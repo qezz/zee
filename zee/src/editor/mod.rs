@@ -476,7 +476,7 @@ impl Component for Editor {
                 Some(NamedBindingQuery::PrefixOf(mut lhs)),
                 Some(NamedBindingQuery::PrefixOf(rhs)),
             ) => {
-                lhs.extend(rhs.into_iter());
+                lhs.extend(rhs);
                 Some(NamedBindingQuery::PrefixOf(lhs))
             }
             (some @ Some(_), None) | (None, some @ Some(_)) => some,

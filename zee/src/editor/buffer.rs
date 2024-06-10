@@ -252,7 +252,7 @@ impl Buffer {
     pub fn new_cursor(&mut self) -> CursorId {
         let new_cursor_id = CursorId(self.cursors.len());
         self.cursors
-            .push(self.cursors.get(0).cloned().unwrap_or_else(Cursor::new));
+            .push(self.cursors.first().cloned().unwrap_or_else(Cursor::new));
         new_cursor_id
     }
 
