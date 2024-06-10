@@ -5,6 +5,7 @@ members = [
     "zee-grammar",
     "zee-highlight",
 ]
+resolver = "2"
 
 [profile.dev]
 opt-level = 2
