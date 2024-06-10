@@ -124,7 +124,7 @@ impl Component for EditTreeViewer {
             }
             let mut pairs = revision.children.windows(2);
 
-            while let Some(&[ref left, ref right]) = pairs.next() {
+            while let Some([left, right]) = pairs.next() {
                 let formatted_left = &formatted_tree[left.index];
                 let formatted_right = &formatted_tree[right.index];
                 assert!(formatted_left.transform.y == formatted_right.transform.y);
