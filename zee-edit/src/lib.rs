@@ -13,6 +13,7 @@ pub use self::{
     movement::Direction,
 };
 
+#[allow(dead_code)]
 trait RopeCursorExt {
     fn cursor_to_line(&self, cursor: &Cursor) -> usize;
 
