@@ -481,8 +481,22 @@ impl Component for Buffer {
             .command("undo", |this: &Self| {
                 this.properties.cursor.undo();
             })
-            .with([Ctrl('_')])
             .with([Ctrl('z')])
+            // On Linux terminal, keycodes for `^/`, `^_`, and `^7` are the same. The
+            // parsed key depends on the library that handles the input. In case of Zee,
+            // it uses Zi framework for terminal based applications, which uses
+            // crossterm library to get key events.
+            //
+            // For more details, see crossterm issues:
+            // - https://github.com/crossterm-rs/crossterm/issues/540
+            // - https://github.com/crossterm-rs/crossterm/issues/685
+            //
+            // To check if it reproduces on your machine, you can try
+            // ```shell
+            // showkey --ascii
+            // ```
+            .with([Ctrl('7')])
+            .with([Ctrl('_')])
             .with([Ctrl('/')]);
 
         // Redo
