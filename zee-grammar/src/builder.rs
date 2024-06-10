@@ -38,7 +38,7 @@ pub(crate) fn load_grammar(grammar_id: String) -> Result<Grammar> {
 
 fn load_query(language: Language, grammar_id: &str, name: &str) -> Result<Query> {
     let query_path = tree_sitter_query_dir(grammar_id)
-        .map(|path| path.join(&format!("{}.scm", name)))
+        .map(|path| path.join(format!("{}.scm", name)))
         .with_context(|| {
             format!(
                 "Failed to build path to query grammar_id={} name={}",
@@ -212,7 +212,7 @@ fn build_tree_sitter_library(grammar_id: &str, paths: &TreeSitterPaths) -> Resul
     if cfg!(windows) {
         command.arg(&paths.parser);
         if let Some(TreeSitterScannerSource { ref path, .. }) = paths.scanner {
-            command.arg(&path);
+            command.arg(path);
         }
         command.arg(format!("/out:{}", library_path.to_str().unwrap()));
     } else {
@@ -323,7 +323,7 @@ impl TreeSitterPaths {
 fn tree_sitter_source_dir(grammar_id: &str) -> Result<PathBuf> {
     Ok(config::config_dir()?
         .join(BUILD_DIR)
-        .join(&format!("tree-sitter-{}", grammar_id)))
+        .join(format!("tree-sitter-{}", grammar_id)))
 }
 
 fn tree_sitter_query_dir(grammar_id: &str) -> Result<PathBuf> {
