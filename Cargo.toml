@@ -17,3 +17,14 @@ lto = true
 opt-level = 3
 panic = "unwind"
 strip = false
+
+[patch.crates-io]
+# zi = { git = "https://github.com/qezz/zi.git", tag = "zi-v0.3.2", pacakge = "zi" }
+# zi-term = { git = "https://github.com/qezz/zi.git", tag = "zi-v0.3.2", pacakge = "zi-term" }
+
+zi = { path = "../zi/zi", pacakge = "zi" }
+zi-term = { path = "../zi/zi-term", pacakge = "zi-term" }
+
+# [patch.crates-io]
+# tendermint = { git = "https://github.com/qezz/tendermint-rs", tag = "v0.34.0-tcp-conn-patch.1", package = "tendermint", features = ["secp256k1"] }
+# ...

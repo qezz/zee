@@ -380,6 +380,13 @@ impl Buffer {
                     }
                     operation.diff
                 }
+                CursorMessage::DeleteBackwardWord => {
+                    let operation = self.cursors[cursor_id.0].delete_backward_word(&mut self.content);
+                    if operation.diff.is_empty() {
+                        self.context.log("Beginning of buffer 2");
+                    }
+                    operation.diff
+                }
                 CursorMessage::DeleteLine => {
                     let diff = self.delete_line(cursor_id);
                     if diff.is_empty() {
@@ -730,6 +737,11 @@ impl BufferCursor {
     }
 
     #[inline]
+    pub fn delete_backward_word(&self) {
+        self.send_cursor(CursorMessage::DeleteBackwardWord);
+    }
+
+    #[inline]
     pub fn delete_line(&self) {
         self.send_cursor(CursorMessage::DeleteLine);
     }
@@ -793,6 +805,7 @@ pub enum CursorMessage {
 
     DeleteForward,
     DeleteBackward,
+    DeleteBackwardWord,
     DeleteLine,
     InsertTab,
     InsertNewLine,
