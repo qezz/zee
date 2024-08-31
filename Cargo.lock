@@ -1825,8 +1825,6 @@ dependencies = [
 [[package]]
 name = "zi"
 version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f60dd39710d9e68afe614f999e52cb8fb39ae25fc6f415957a3acd9bbabe878"
 dependencies = [
  "euclid",
  "log",
@@ -1840,8 +1838,6 @@ dependencies = [
 [[package]]
 name = "zi-term"
 version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9aa61986037e4aea7cdfb0e9a924f3bf1739ac2b2d2b4e7888e52697e14040ed"
 dependencies = [
  "crossterm",
  "futures",

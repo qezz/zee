@@ -178,6 +178,10 @@ impl Buffer {
         self.properties.cursor.delete_backward()
     }
 
+    fn delete_backward_word(&self) {
+        self.properties.cursor.delete_backward_word()
+    }
+
     fn delete_line(&self) {
         self.properties.cursor.delete_line()
     }
@@ -355,14 +359,14 @@ impl Component for Buffer {
                     .cursor
                     .send_cursor(CursorMessage::MoveWord(Direction::Backward, 1))
             })
-            .with([Alt('b')]);
+            .with([Alt(ExtraKey::Char('b'))]);
         bindings
             .command("move-forward-word", |this: &Self| {
                 this.properties
                     .cursor
                     .send_cursor(CursorMessage::MoveWord(Direction::Forward, 1))
             })
-            .with([Alt('f')]);
+            .with([Alt(ExtraKey::Char('f'))]);
 
         // Move by paragraph
         bindings
@@ -371,14 +375,14 @@ impl Component for Buffer {
                     .cursor
                     .send_cursor(CursorMessage::MoveParagraph(Direction::Backward, 1))
             })
-            .with([Alt('p')]);
+            .with([Alt(ExtraKey::Char('p'))]);
         bindings
             .command("move-forward-paragraph", |this: &Self| {
                 this.properties
                     .cursor
                     .send_cursor(CursorMessage::MoveParagraph(Direction::Forward, 1))
             })
-            .with([Alt('n')]);
+            .with([Alt(ExtraKey::Char('n'))]);
 
         // Page down
         bindings
@@ -389,7 +393,7 @@ impl Component for Buffer {
         // Page up
         bindings
             .command("move-page-up", Self::move_page_up)
-            .with([Alt('v')])
+            .with([Alt(ExtraKey::Char('v'))])
             .with([PageUp]);
 
         // Start/end of line
@@ -405,10 +409,14 @@ impl Component for Buffer {
         // Start/end of buffer
         bindings.add(
             "move-start-of-buffer",
-            [Alt('<')],
+            [Alt(ExtraKey::Char('<'))],
             Self::move_start_of_buffer,
         );
-        bindings.add("move-end-of-buffer", [Alt('>')], Self::move_end_of_buffer);
+        bindings.add(
+            "move-end-of-buffer",
+            [Alt(ExtraKey::Char('>'))],
+            Self::move_end_of_buffer,
+        );
 
         // Editing
         //
@@ -420,6 +428,16 @@ impl Component for Buffer {
 
         // Delete backward
         bindings.add("delete-backward", [Backspace], Self::delete_backward);
+        bindings.add(
+            "backward-kill-word",
+            [Alt(ExtraKey::Backspace)],
+            Self::delete_backward_word,
+        );
+        bindings.add(
+            "backward-kill-word",
+            [Alt(ExtraKey::Char('i'))],
+            Self::delete_backward_word,
+        );
 
         // Delete line
         bindings.add("delete-line", [Ctrl('k')], Self::delete_line);
@@ -462,9 +480,13 @@ impl Component for Buffer {
             this.properties.cursor.select_all();
         });
         // Copy selection to clipboard
-        bindings.add("copy-selection", [Alt('w')], |this: &Self| {
-            this.properties.cursor.copy_selection_to_clipboard();
-        });
+        bindings.add(
+            "copy-selection",
+            [Alt(ExtraKey::Char('w'))],
+            |this: &Self| {
+                this.properties.cursor.copy_selection_to_clipboard();
+            },
+        );
         // Cut selection to clipboard
         bindings.add("cut-selection", [Ctrl('w')], |this: &Self| {
             this.properties.cursor.cut_selection_to_clipboard();

@@ -224,6 +224,36 @@ impl Cursor {
         }
     }
 
+    pub fn delete_backward_word(&mut self, text: &mut Rope) -> DeleteOperation {
+        let end = self.range.start;
+        if self.range.start > 0 {
+            // movement::move_horizontally(text, self, Direction::Backward, 1);
+            movement::move_word(text, self, Direction::Backward, 1);
+            let start = self.range.start;
+
+            let delete_range_start = start;
+            let delete_range_end = end;
+            let deleted = text.slice(delete_range_start..delete_range_end).into();
+
+            let diff = OpaqueDiff::new(
+                text.char_to_byte(delete_range_start),
+                text.char_to_byte(delete_range_end) - text.char_to_byte(delete_range_start),
+                0,
+                delete_range_start,
+                delete_range_end - delete_range_start,
+                0,
+            );
+            text.remove(delete_range_start..delete_range_end);
+
+            DeleteOperation {
+                diff,
+                deleted,
+            }
+        } else {
+            DeleteOperation::empty()
+        }
+    }
+
     pub fn delete_line(&mut self, text: &mut Rope) -> DeleteOperation {
         if text.len_chars() == 0 {
             return DeleteOperation::empty();
@@ -376,6 +406,27 @@ mod tests {
         cursor.delete_backward(&mut text);
         assert_eq!(expected, text);
     }
+
+    #[test]
+    fn delete_backward_word() {
+        let (mut text, mut cursor) = text_with_cursor("// Hello world!");
+        movement::move_to_end_of_buffer(&text, &mut cursor);
+        cursor.delete_backward_word(&mut text);
+        assert_eq!(Rope::from("// Hello "), text);
+        cursor.delete_backward_word(&mut text);
+        assert_eq!(Rope::from("// "), text);
+    }
+
+    #[test]
+    fn delete_backward_word_2() {
+        let (mut text, mut cursor) = text_with_cursor("// Hello world!\n");
+        movement::move_to_end_of_buffer(&text, &mut cursor);
+        cursor.delete_backward_word(&mut text);
+        assert_eq!(Rope::from("// Hello "), text);
+        cursor.delete_backward_word(&mut text);
+        assert_eq!(Rope::from("// "), text);
+    }
+
 
     const TEXT: &str = r#"
 Basic Latin
